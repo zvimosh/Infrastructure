@@ -1,0 +1,43 @@
+version: '3.3'
+volumes:
+    mongodbstorage:
+        name: mysqlstorage
+    wordpressstorage:
+        name: wordpressstorage
+networks:
+    backend:
+            name: backend
+services:
+    mysql:
+        networks:
+            - backend
+        container_name: mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=Zxasqw12
+            - MYSQL_DATABASE=dbwordpress
+            - MYSQL_USER=dbuser
+            - MYSQL_PASSWORD=dbpass
+        volumes:
+            - mongodbstorage:/var/lib/mysql
+        image: mysql
+    wordpress:
+        networks:
+            - backend
+        container_name: wordpress
+        environment:
+            - WORDPRESS_DB_HOST=mysql
+            - WORDPRESS_DB_PASSWORD=Zxasqw12
+            - WORDPRESS_DB_USER=dbuser
+            - WORDPRESS_DB_PASSWORD=dbpass
+            - WORDPRESS_DB_NAME=dbwordpress
+        volumes:
+            - wordpressstorage:/var/www/html
+        ports:
+            - '8081:80'
+        image: wordpress
+        depends_on:
+            - mysql
+
+
+
+
